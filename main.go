@@ -8,6 +8,7 @@ import (
 	"github.com/gosuri/uitable"
 	"github.com/spf13/cobra"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -83,8 +84,8 @@ func main() {
 
 func (c *contactsCmd) run() (err error) {
 	var buf bytes.Buffer
-	url := fmt.Sprintf("%s/api/user/contacts?%s", api, c.queryString())
-	req, err := http.NewRequest("GET", url, &buf)
+	s := fmt.Sprintf("%s/api/user/contacts?%s", api, c.queryString())
+	req, err := http.NewRequest("GET", s, &buf)
 	if err != nil {
 		return
 	}
@@ -126,7 +127,7 @@ func (c *contactsCmd) queryString() string {
 	var qss []string
 	for k, v := range qs {
 		if v != "" {
-			qss = append(qss, k+"="+v)
+			qss = append(qss, k+"="+url.QueryEscape(v))
 		}
 	}
 	return strings.Join(qss, "&")
