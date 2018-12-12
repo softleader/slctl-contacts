@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/gosuri/uitable"
 	"github.com/spf13/cobra"
@@ -49,16 +50,19 @@ func main() {
 		Short: "View contacts details in SoftLeader organization",
 		Long:  longDesc,
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			c.offline, _ = strconv.ParseBool(os.Getenv("SL_OFFLINE"))
-			c.verbose, _ = strconv.ParseBool(os.Getenv("SL_VERBOSE"))
-			c.token = os.ExpandEnv(c.token)
-			if len(args) > 0 {
-				if arg := strings.TrimSpace(args[1]); arg != "" {
+			if len := len(args); len > 0 {
+				if len > 1 {
+					return errors.New("this command does not accept more than 1 arguments")
+				}
+				if arg := strings.TrimSpace(args[0]); arg != "" {
 					if c.idno, err = strconv.Atoi(arg); err != nil {
 						c.name = arg
 					}
 				}
 			}
+			c.offline, _ = strconv.ParseBool(os.Getenv("SL_OFFLINE"))
+			c.verbose, _ = strconv.ParseBool(os.Getenv("SL_VERBOSE"))
+			c.token = os.ExpandEnv(c.token)
 			return c.run()
 		},
 	}
@@ -91,7 +95,7 @@ func (c *contactsCmd) run() (err error) {
 	}
 	contacts := contacts{}
 	if err = json.NewDecoder(resp.Body).Decode(&contacts); err != nil {
-		return err
+		return fmt.Errorf("unable to unmarshal response from leave service: %s", err)
 	}
 	if len(contacts.Datas) == 0 {
 		fmt.Printf("No search results")
