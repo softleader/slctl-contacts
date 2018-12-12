@@ -1,17 +1,16 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/gosuri/uitable"
 	"github.com/spf13/cobra"
-	"net/http"
-	"net/url"
 	"os"
 	"strconv"
 	"strings"
+	"gopkg.in/resty.v1"
+	"io"
 )
 
 const (
@@ -36,8 +35,10 @@ var (
 )
 
 type contactsCmd struct {
+	offline bool
 	verbose bool
 	token   string
+	out     io.Writer
 	name    string // 姓名, 模糊查詢
 	id      int    // 員編
 	all     bool
@@ -45,6 +46,7 @@ type contactsCmd struct {
 
 func main() {
 	c := contactsCmd{}
+	c.offline, _ = strconv.ParseBool(os.Getenv("SL_OFFLINE"))
 	c.verbose, _ = strconv.ParseBool(os.Getenv("SL_VERBOSE"))
 
 	cmd := &cobra.Command{
@@ -52,7 +54,7 @@ func main() {
 		Short: "view contacts details in SoftLeader organization",
 		Long:  longDesc,
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			if offline, _ := strconv.ParseBool(os.Getenv("SL_OFFLINE")); offline {
+			if c.offline {
 				return fmt.Errorf("can not run the command in offline mode")
 			}
 			if c.token = os.ExpandEnv(c.token); c.token == "" {
@@ -68,11 +70,13 @@ func main() {
 					}
 				}
 			}
+			c.out = cmd.OutOrStdout()
 			return c.run()
 		},
 	}
 
 	f := cmd.Flags()
+	f.BoolVarP(&c.offline, "offline", "o", c.offline, "work offline, Overrides $SL_OFFLINE")
 	f.BoolVarP(&c.verbose, "verbose", "v", c.verbose, "enable verbose output, Overrides $SL_VERBOSE")
 	f.StringVar(&c.token, "token", "$SL_TOKEN", "github access token. Overrides $SL_TOKEN")
 	f.BoolVarP(&c.all, "all", "a", false, "show all contacts (default shows just active contacts)")
@@ -83,52 +87,50 @@ func main() {
 }
 
 func (c *contactsCmd) run() (err error) {
-	var buf bytes.Buffer
-	s := fmt.Sprintf("%s/api/user/contacts?%s", api, c.queryString())
-	req, err := http.NewRequest("GET", s, &buf)
-	if err != nil {
-		return
-	}
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.token))
+	resp, err := resty.R().
+		SetQueryParams(c.queryParams()).
+		SetAuthToken(c.token).
+		Get(fmt.Sprintf("%s/api/user/contacts", api))
 	if c.verbose {
-		fmt.Printf("%s %s\n", req.Method, req.URL)
-		fmt.Printf("Header: %v\n", req.Header)
+		fmt.Fprintf(c.out, "> %v %v\n", resp.Request.Method, resp.Request.URL)
+		for k, v := range resp.Request.Header {
+			fmt.Fprintf(c.out, "> %v: %v\n", k, strings.Join(v, ", "))
+		}
+		fmt.Fprintln(c.out, ">")
+		fmt.Fprintf(c.out, "< Error: %v\n", err)
+		fmt.Fprintf(c.out, "< Status Code: %v\n", resp.StatusCode())
+		fmt.Fprintf(c.out, "< Status: %v\n", resp.Status())
+		fmt.Fprintf(c.out, "< Time: %v\n", resp.Time())
+		fmt.Fprintf(c.out, "< Received At: %v\n", resp.ReceivedAt())
+		fmt.Fprintf(c.out, "%v\n", resp)
 	}
-	client := &http.Client{}
-	resp, err := client.Do(req)
 	if err != nil {
 		return
 	}
 	contacts := contacts{}
-	if err = json.NewDecoder(resp.Body).Decode(&contacts); err != nil {
-		return fmt.Errorf("unable to unmarshal response from leave service: %s", err)
+	if err = json.Unmarshal([]byte(resp.String()), &contacts); err != nil {
+		return fmt.Errorf("unable to unmarshal response: %s", err)
 	}
 	if len(contacts.Datas) == 0 {
-		fmt.Printf("No search results")
+		fmt.Fprintf(c.out, "No search results")
 	} else {
 		table := uitable.New()
 		table.AddRow(contacts.Header...)
 		for _, data := range contacts.Datas {
 			table.AddRow(data...)
 		}
-		fmt.Println(table)
+		fmt.Fprintln(c.out, table)
 	}
 	return
 }
 
-func (c *contactsCmd) queryString() string {
-	qs := make(map[string]string)
-	qs["a"] = strconv.FormatBool(c.all)
+func (c *contactsCmd) queryParams() (qp map[string]string) {
+	qp = make(map[string]string)
+	qp["a"] = strconv.FormatBool(c.all)
 	if c.id > 0 {
-		qs["i"] = strconv.Itoa(c.id)
-	} else {
-		qs["n"] = c.name
+		qp["i"] = strconv.Itoa(c.id)
+	} else if c.name != "" {
+		qp["n"] = c.name
 	}
-	var qss []string
-	for k, v := range qs {
-		if v != "" {
-			qss = append(qss, k+"="+url.QueryEscape(v))
-		}
-	}
-	return strings.Join(qss, "&")
+	return
 }
