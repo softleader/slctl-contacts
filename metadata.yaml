@@ -1,21 +1,6 @@
 name: contacts
 version: 0.1.0
 usage: contacts
-description: The contacts plugin
+description: View contacts details in SoftLeader organization
 exec:
   command: $SL_PLUGIN_DIR/contacts
-  platform:
-  - os: darwin
-    arch: ""
-    command: $SL_PLUGIN_DIR/contacts
-  - os: windows
-    arch: ""
-    command: $SL_PLUGIN_DIR/contacts
-hook:
-  command: echo hello contacts
-  platform: []
-ignoreglobalflags: false
-github:
-  scopes:
-  - read:org
-  - user
