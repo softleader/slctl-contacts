@@ -1,6 +1,6 @@
 # slctl-contacts
 
-The slctl plugin to view the contacts details in SoftLeader organization
+The [slctl](https://github.com/softleader/slctl) plugin to view the contacts details in SoftLeader organization
 
 ## Install
 
