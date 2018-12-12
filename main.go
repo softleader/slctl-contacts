@@ -35,7 +35,6 @@ var (
 )
 
 type contactsCmd struct {
-	offline bool
 	verbose bool
 	token   string
 	name    string // 姓名, 模糊查詢
@@ -45,7 +44,6 @@ type contactsCmd struct {
 
 func main() {
 	c := contactsCmd{}
-	c.offline, _ = strconv.ParseBool(os.Getenv("SL_OFFLINE"))
 	c.verbose, _ = strconv.ParseBool(os.Getenv("SL_VERBOSE"))
 
 	cmd := &cobra.Command{
@@ -53,7 +51,7 @@ func main() {
 		Short: "View contacts details in SoftLeader organization",
 		Long:  longDesc,
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			if c.offline {
+			if offline, _ := strconv.ParseBool(os.Getenv("SL_OFFLINE")); offline {
 				return fmt.Errorf("can not run the command in offline mode")
 			}
 			if len := len(args); len > 0 {
@@ -72,7 +70,6 @@ func main() {
 	}
 
 	f := cmd.Flags()
-	f.BoolVarP(&c.offline, "offline", "o", c.offline, "work offline, Overrides $SL_OFFLINE")
 	f.BoolVarP(&c.verbose, "verbose", "v", c.verbose, "enable verbose output, Overrides $SL_VERBOSE")
 	f.StringVar(&c.token, "token", "$SL_TOKEN", "github access token. Overrides $SL_TOKEN")
 	f.BoolVarP(&c.all, "all", "a", false, "show all contacts (default shows just active contacts)")
