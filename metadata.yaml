@@ -1,6 +1,6 @@
 name: contacts
 version: 0.1.0
 usage: contacts
-description: View contacts details in SoftLeader organization
+description: view contacts details in SoftLeader organization
 exec:
   command: $SL_PLUGIN_DIR/contacts

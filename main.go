@@ -47,8 +47,8 @@ func main() {
 	c.verbose, _ = strconv.ParseBool(os.Getenv("SL_VERBOSE"))
 
 	cmd := &cobra.Command{
-		Use:   "contacts NAME/IDNO",
-		Short: "View contacts details in SoftLeader organization",
+		Use:   "slctl contacts NAME/IDNO",
+		Short: "view contacts details in SoftLeader organization",
 		Long:  longDesc,
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			if offline, _ := strconv.ParseBool(os.Getenv("SL_OFFLINE")); offline {
