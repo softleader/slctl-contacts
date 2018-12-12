@@ -54,6 +54,9 @@ func main() {
 			if offline, _ := strconv.ParseBool(os.Getenv("SL_OFFLINE")); offline {
 				return fmt.Errorf("can not run the command in offline mode")
 			}
+			if c.token = os.ExpandEnv(c.token); c.token == "" {
+				return fmt.Errorf("require GitHub access token to run the command")
+			}
 			if len := len(args); len > 0 {
 				if len > 1 {
 					return errors.New("this command does not accept more than 1 arguments")
@@ -64,7 +67,6 @@ func main() {
 					}
 				}
 			}
-			c.token = os.ExpandEnv(c.token)
 			return c.run()
 		},
 	}
