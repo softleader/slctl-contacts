@@ -1,5 +1,7 @@
 # slctl-contacts
 
+The slctl plugin to view the contacts details in SoftLeader organization
+
 ## Install
 
 ```sh
