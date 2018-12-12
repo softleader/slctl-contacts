@@ -1,16 +1,16 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/gosuri/uitable"
 	"github.com/spf13/cobra"
 	"os"
 	"strconv"
 	"strings"
 	"gopkg.in/resty.v1"
 	"io"
+	"encoding/json"
+	"github.com/gosuri/uitable"
 )
 
 const (
@@ -107,19 +107,24 @@ func (c *contactsCmd) run() (err error) {
 	if err != nil {
 		return
 	}
+	err = print(c.out, resp.Body())
+	return
+}
+
+func print(out io.Writer, data []byte) (err error) {
 	contacts := contacts{}
-	if err = json.Unmarshal([]byte(resp.String()), &contacts); err != nil {
+	if err = json.Unmarshal(data, &contacts); err != nil {
 		return fmt.Errorf("unable to unmarshal response: %s", err)
 	}
 	if len(contacts.Datas) == 0 {
-		fmt.Fprintf(c.out, "No search results")
+		fmt.Fprintf(out, "No search results")
 	} else {
 		table := uitable.New()
 		table.AddRow(contacts.Header...)
 		for _, data := range contacts.Datas {
 			table.AddRow(data...)
 		}
-		fmt.Fprintln(c.out, table)
+		fmt.Fprintln(out, table)
 	}
 	return
 }
