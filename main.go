@@ -38,7 +38,7 @@ type contactsCmd struct {
 	verbose bool
 	token   string
 	name    string // 姓名, 模糊查詢
-	idno    int    // 員編
+	id      int    // 員編
 	all     bool
 }
 
@@ -47,7 +47,7 @@ func main() {
 	c.verbose, _ = strconv.ParseBool(os.Getenv("SL_VERBOSE"))
 
 	cmd := &cobra.Command{
-		Use:   "slctl contacts NAME/IDNO",
+		Use:   "slctl contacts NAME/ID",
 		Short: "view contacts details in SoftLeader organization",
 		Long:  longDesc,
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -62,7 +62,7 @@ func main() {
 					return errors.New("this command does not accept more than 1 arguments")
 				}
 				if arg := strings.TrimSpace(args[0]); arg != "" {
-					if c.idno, err = strconv.Atoi(arg); err != nil {
+					if c.id, err = strconv.Atoi(arg); err != nil {
 						c.name = arg
 					}
 				}
@@ -118,8 +118,8 @@ func (c *contactsCmd) run() (err error) {
 func (c *contactsCmd) queryString() string {
 	qs := make(map[string]string)
 	qs["a"] = strconv.FormatBool(c.all)
-	if c.idno > 0 {
-		qs["i"] = strconv.Itoa(c.idno)
+	if c.id > 0 {
+		qs["i"] = strconv.Itoa(c.id)
 	} else {
 		qs["n"] = c.name
 	}
