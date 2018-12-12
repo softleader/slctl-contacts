@@ -107,6 +107,11 @@ func (c *contactsCmd) run() (err error) {
 	if err != nil {
 		return
 	}
+	if !resp.IsSuccess() {
+		return fmt.Errorf(`expected response status code 2xx, but got %v.
+Use the '--verbose' flag to see the full stacktrace
+`, resp.StatusCode())
+	}
 	err = print(c.out, resp.Body())
 	return
 }
