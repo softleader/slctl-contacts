@@ -127,10 +127,10 @@ func (c *contactsCmd) run() (err error) {
 func (c *contactsCmd) queryParams() (qp map[string]string) {
 	qp = make(map[string]string)
 	qp["a"] = strconv.FormatBool(c.all)
-	if c.id > 0 {
-		qp["i"] = strconv.Itoa(c.id)
-	} else if c.name != "" {
-		qp["n"] = c.name
+	if id := c.id; id > 0 {
+		qp["i"] = strconv.Itoa(id)
+	} else if name := c.name; name != "" {
+		qp["n"] = name
 	}
 	return
 }
