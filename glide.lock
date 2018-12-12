@@ -1,0 +1,12 @@
+hash: 69936cf616303490a2b5da9c3b389d7fbdf1b56734b2146b14ef706fe8db3ea3
+updated: 2018-12-12T15:32:06.600935+08:00
+imports:
+- name: github.com/gosuri/uitable
+  version: 36ee7e946282a3fb1cfecd476ddc9b35d8847e42
+- name: github.com/inconshreveable/mousetrap
+  version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
+- name: github.com/spf13/cobra
+  version: ef82de70bb3f60c65fb8eebacbb2d122ef517385
+- name: github.com/spf13/pflag
+  version: 3ebe029320b2676d667ae88da602a5f854788a8a
+testImports: []

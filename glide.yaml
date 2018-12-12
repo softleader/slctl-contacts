@@ -1,0 +1,4 @@
+package: github.com/softleader/slctl-contacts
+import:
+- package: github.com/spf13/cobra
+- package: github.com/gosuri/uitable
