@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/gosuri/uitable"
 	"github.com/spf13/cobra"
 	"gopkg.in/resty.v1"
 	"io"
@@ -134,22 +133,12 @@ func print(out io.Writer, data []byte, horizontal bool) (err error) {
 	}
 	if len(contacts.Datas) == 0 {
 		fmt.Fprintf(out, "No search results")
+		return
+	}
+	if horizontal {
+		fmt.Fprintln(out, contacts.horizontalTable())
 	} else {
-		table := uitable.New()
-		if horizontal {
-			table.AddRow(contacts.Header...)
-			for _, data := range contacts.Datas {
-				table.AddRow(data...)
-			}
-		} else {
-			for _, data := range contacts.Datas {
-				for i, header := range contacts.Header {
-					table.AddRow(fmt.Sprintf("%s:", header), data[i])
-				}
-				table.AddRow("") // blank
-			}
-		}
-		fmt.Fprintln(out, table)
+		fmt.Fprintln(out, contacts.verticalTable())
 	}
 	return
 }
