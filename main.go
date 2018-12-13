@@ -85,11 +85,7 @@ func main() {
 	f.StringVar(&c.token, "token", "$SL_TOKEN", "github access token. Overrides $SL_TOKEN")
 	f.BoolVarP(&c.all, "all", "a", false, "show all contacts (default shows just active contacts)")
 	f.BoolVarP(&c.horizontal, "horizontal", "H", false, "show contacts horizontally")
-
-	cmd.AddCommand(
-		newVersionCmd(c.out),
-	)
-
+	
 	if err := cmd.Execute(); err != nil {
 		os.Exit(1)
 	}
