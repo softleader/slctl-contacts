@@ -1,16 +1,16 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/gosuri/uitable"
 	"github.com/spf13/cobra"
+	"gopkg.in/resty.v1"
+	"io"
 	"os"
 	"strconv"
 	"strings"
-	"gopkg.in/resty.v1"
-	"io"
-	"encoding/json"
-	"github.com/gosuri/uitable"
 )
 
 const (
@@ -39,6 +39,8 @@ type contactsCmd struct {
 	verbose bool
 	token   string
 	out     io.Writer
+	cli     string
+	version string
 	name    string // 姓名, 模糊查詢
 	id      int    // 員編
 	all     bool
@@ -46,9 +48,6 @@ type contactsCmd struct {
 
 func main() {
 	c := contactsCmd{}
-	c.offline, _ = strconv.ParseBool(os.Getenv("SL_OFFLINE"))
-	c.verbose, _ = strconv.ParseBool(os.Getenv("SL_VERBOSE"))
-
 	cmd := &cobra.Command{
 		Use:   "slctl contacts NAME/ID",
 		Short: "view contacts details in SoftLeader organization",
@@ -70,16 +69,25 @@ func main() {
 					}
 				}
 			}
-			c.out = cmd.OutOrStdout()
 			return c.run()
 		},
 	}
+
+	c.out = cmd.OutOrStdout()
+	c.cli = os.Getenv("SL_CLI")
+	c.version = os.Getenv("SL_VERSION")
+	c.offline, _ = strconv.ParseBool(os.Getenv("SL_OFFLINE"))
+	c.verbose, _ = strconv.ParseBool(os.Getenv("SL_VERBOSE"))
 
 	f := cmd.Flags()
 	f.BoolVarP(&c.offline, "offline", "o", c.offline, "work offline, Overrides $SL_OFFLINE")
 	f.BoolVarP(&c.verbose, "verbose", "v", c.verbose, "enable verbose output, Overrides $SL_VERBOSE")
 	f.StringVar(&c.token, "token", "$SL_TOKEN", "github access token. Overrides $SL_TOKEN")
 	f.BoolVarP(&c.all, "all", "a", false, "show all contacts (default shows just active contacts)")
+
+	cmd.AddCommand(
+		newVersionCmd(c.out),
+	)
 
 	if err := cmd.Execute(); err != nil {
 		os.Exit(1)
@@ -90,6 +98,7 @@ func (c *contactsCmd) run() (err error) {
 	resp, err := resty.R().
 		SetQueryParams(c.queryParams()).
 		SetAuthToken(c.token).
+		SetHeader("User-Agent", fmt.Sprintf("%s/%s %s/%s", c.cli, c.version, "contacts", ver())).
 		Get(fmt.Sprintf("%s/api/user/contacts", api))
 	if c.verbose {
 		fmt.Fprintf(c.out, "> %v %v\n", resp.Request.Method, resp.Request.URL)
