@@ -1,8 +1,8 @@
 package main
 
 import (
-	"testing"
 	"bytes"
+	"testing"
 )
 
 func TestPrint(t *testing.T) {
@@ -12,6 +12,17 @@ func TestPrint(t *testing.T) {
 		t.Error(err)
 	}
 	if buf.String() == "No search results" {
-		t.Error("excepted buf not empty")
+		t.Error("excepted response not empty")
+	}
+}
+
+func TestPrintEmpty(t *testing.T) {
+	resp := `{"header":null,"datas":null}`
+	var buf bytes.Buffer
+	if err := print(&buf, []byte(resp)); err != nil {
+		t.Error(err)
+	}
+	if buf.String() != "No search results" {
+		t.Error("excepted empty response")
 	}
 }
