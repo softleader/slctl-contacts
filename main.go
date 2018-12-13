@@ -35,15 +35,16 @@ var (
 )
 
 type contactsCmd struct {
-	offline bool
-	verbose bool
-	token   string
-	out     io.Writer
-	cli     string
-	version string
-	name    string // 姓名, 模糊查詢
-	id      int    // 員編
-	all     bool
+	offline    bool
+	verbose    bool
+	token      string
+	out        io.Writer
+	cli        string
+	version    string
+	name       string // 姓名, 模糊查詢
+	id         int    // 員編
+	all        bool
+	horizontal bool // 水平列表
 }
 
 func main() {
@@ -84,6 +85,7 @@ func main() {
 	f.BoolVarP(&c.verbose, "verbose", "v", c.verbose, "enable verbose output, Overrides $SL_VERBOSE")
 	f.StringVar(&c.token, "token", "$SL_TOKEN", "github access token. Overrides $SL_TOKEN")
 	f.BoolVarP(&c.all, "all", "a", false, "show all contacts (default shows just active contacts)")
+	f.BoolVarP(&c.horizontal, "horizontal", "H", false, "show contacts horizontally")
 
 	cmd.AddCommand(
 		newVersionCmd(c.out),
@@ -121,11 +123,11 @@ func (c *contactsCmd) run() (err error) {
 Use the '--verbose' flag to see the full stacktrace
 `, resp.StatusCode())
 	}
-	err = print(c.out, resp.Body())
+	err = print(c.out, resp.Body(), c.horizontal)
 	return
 }
 
-func print(out io.Writer, data []byte) (err error) {
+func print(out io.Writer, data []byte, horizontal bool) (err error) {
 	contacts := contacts{}
 	if err = json.Unmarshal(data, &contacts); err != nil {
 		return fmt.Errorf("unable to unmarshal response: %s", err)
@@ -134,9 +136,18 @@ func print(out io.Writer, data []byte) (err error) {
 		fmt.Fprintf(out, "No search results")
 	} else {
 		table := uitable.New()
-		table.AddRow(contacts.Header...)
-		for _, data := range contacts.Datas {
-			table.AddRow(data...)
+		if horizontal {
+			table.AddRow(contacts.Header...)
+			for _, data := range contacts.Datas {
+				table.AddRow(data...)
+			}
+		} else {
+			for _, data := range contacts.Datas {
+				for i, header := range contacts.Header {
+					table.AddRow(fmt.Sprintf("%s:", header), data[i])
+				}
+				table.AddRow("") // blank
+			}
 		}
 		fmt.Fprintln(out, table)
 	}

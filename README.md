@@ -23,6 +23,12 @@ $ slctl contacts matt
 $ slctl contacts 33
 ```
 
+預設是垂直顯示通訊錄資料, 傳入 `--horizontal` 可改成水平顯示
+
+```sh
+$ slctl contacts -H
+```
+
 傳入 `--all` 可以查詢包含非 active 的員工通訊錄, e.g. 已離職員工
 
 ```sh
