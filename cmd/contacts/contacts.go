@@ -85,31 +85,20 @@ func main() {
 	f.StringVar(&c.token, "token", "$SL_TOKEN", "github access token. Overrides $SL_TOKEN")
 	f.BoolVarP(&c.all, "all", "a", false, "show all contacts (default shows just active contacts)")
 	f.BoolVarP(&c.horizontal, "horizontal", "H", false, "show contacts horizontally")
-	
+
 	if err := cmd.Execute(); err != nil {
 		os.Exit(1)
 	}
 }
 
 func (c *contactsCmd) run() (err error) {
-	resp, err := resty.R().
+	resp, err := resty.
+		SetDebug(c.verbose).
+		R().
 		SetQueryParams(c.queryParams()).
 		SetAuthToken(c.token).
 		SetHeader("User-Agent", fmt.Sprintf("%s/%s %s/%s", c.cli, c.version, "contacts", ver())).
 		Get(fmt.Sprintf("%s/api/user/contacts", api))
-	if c.verbose {
-		fmt.Fprintf(c.out, "> %v %v\n", resp.Request.Method, resp.Request.URL)
-		for k, v := range resp.Request.Header {
-			fmt.Fprintf(c.out, "> %v: %v\n", k, strings.Join(v, ", "))
-		}
-		fmt.Fprintln(c.out, ">")
-		fmt.Fprintf(c.out, "< Error: %v\n", err)
-		fmt.Fprintf(c.out, "< Status Code: %v\n", resp.StatusCode())
-		fmt.Fprintf(c.out, "< Status: %v\n", resp.Status())
-		fmt.Fprintf(c.out, "< Time: %v\n", resp.Time())
-		fmt.Fprintf(c.out, "< Received At: %v\n", resp.ReceivedAt())
-		fmt.Fprintf(c.out, "%v\n", resp)
-	}
 	if err != nil {
 		return
 	}
