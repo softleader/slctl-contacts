@@ -1,5 +1,5 @@
 name: contacts
-version: 0.1.0
+version: 1.0.0
 usage: view contacts details in SoftLeader organization
 description: View contacts details in SoftLeader organization
 exec:
