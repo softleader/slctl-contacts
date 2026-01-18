@@ -30,7 +30,6 @@ archives:
     name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}-{{ .Version }}"
     files:
       - src: metadata.yaml
-        dst: .
     wrap_in_directory: false
 
 checksum:
