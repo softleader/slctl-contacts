@@ -4,12 +4,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/spf13/cobra"
-	"gopkg.in/resty.v1"
 	"io"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/go-resty/resty/v2"
+	"github.com/spf13/cobra"
 )
 
 const (
@@ -30,7 +31,7 @@ const (
 )
 
 var (
-	api = "https://support.softleader.com.tw/leave"
+	api = "https://support.softleader.com.tw/erp"
 )
 
 type contactsCmd struct {
@@ -92,9 +93,9 @@ func main() {
 }
 
 func (c *contactsCmd) run() (err error) {
-	resp, err := resty.
-		SetDebug(c.verbose).
-		R().
+	client := resty.New()
+	client.SetDebug(c.verbose)
+	resp, err := client.R().
 		SetQueryParams(c.queryParams()).
 		SetAuthToken(c.token).
 		SetHeader("User-Agent", fmt.Sprintf("%s/%s %s/%s", c.cli, c.version, "contacts", ver())).

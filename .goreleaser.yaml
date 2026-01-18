@@ -1,0 +1,39 @@
+version: 2
+
+project_name: contacts
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+      - goos: linux
+        goarch: arm64
+    main: ./cmd/contacts
+    binary: contacts
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+
+archives:
+  - formats: 
+      - tar.gz
+    # Spec requires strict naming conventions.
+    # We will use {{ .ProjectName }}-{{ .Os }}-{{ .Arch }}-{{ .Version }} to accommodate the new arm64 support clearly.
+    name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}-{{ .Version }}"
+    files:
+      - src: metadata.yaml
+    wrap_in_directory: false
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"

@@ -34,3 +34,19 @@ $ slctl contacts -H
 ```sh
 $ slctl contacts -a
 ````
+
+## Developer Guide
+
+### Release Process
+
+This project uses [GoReleaser](https://goreleaser.com/) and GitHub Actions for automated releases.
+
+To release a new version:
+1.  Push a new tag (e.g., `v0.1.4`).
+2.  GitHub Actions will automatically build binaries for Linux, Windows, and macOS (amd64/arm64) and attach them to the GitHub Release.
+
+Manual release via GoReleaser (for testing):
+```sh
+goreleaser release --snapshot --clean
+```
+

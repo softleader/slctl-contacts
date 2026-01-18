@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	unreleased  = "unreleased"
+	unreleased = "unreleased"
 )
 
 var version string
