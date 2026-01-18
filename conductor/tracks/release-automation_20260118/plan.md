@@ -11,7 +11,7 @@
 - [x] Task: 建立 GitHub Actions 工作流檔案 <!-- ff2a873 -->
     - [ ] 建立 `.github/workflows/release.yml` 檔案。
     - [ ] 設定觸發條件為推送 Tag。
-- [ ] Task: Conductor - User Manual Verification '階段 1：基礎配置與環境準備' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification '階段 1：基礎配置與環境準備' (Protocol in workflow.md)
 
 ## 階段 2：本地驗證與測試
 
