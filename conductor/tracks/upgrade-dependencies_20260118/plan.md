@@ -6,8 +6,8 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: 基礎環境檢查與備份' (Protocol in workflow.md)
 
 ## Phase 2: 依賴包升級與適配 (Upgrade & Adaptation)
-- [ ] Task: 升級 `github.com/spf13/cobra` 與 `github.com/gosuri/uitable` 並驗證編譯
-- [ ] Task: 將 `gopkg.in/resty.v1` 升級至 `v2` 並修改相關程式碼以符合新 API (如有變更)
+- [x] Task: 升級 `github.com/spf13/cobra` 與 `github.com/gosuri/uitable` 並驗證編譯 (11cdc14)
+- [~] Task: 將 `gopkg.in/resty.v1` 升級至 `v2` 並修改相關程式碼以符合新 API (如有變更)
 - [ ] Task: 執行 `go mod tidy` 升級所有間接依賴並清理 `go.mod`
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: 依賴包升級與適配' (Protocol in workflow.md)
 
