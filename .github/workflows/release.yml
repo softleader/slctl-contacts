@@ -25,10 +25,21 @@ jobs:
         with:
           go-version-file: 'go.mod'
 
-      - name: Create and push tag
+      - name: Bump version in metadata.yaml
         run: |
+          VERSION=${{ github.event.inputs.tag }}
+          # Remove 'v' prefix if present
+          VERSION=${VERSION#v}
+          sed -i "s/^version: .*/version: $VERSION/" metadata.yaml
+          
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add metadata.yaml
+          git commit -m "chore: bump version to ${{ github.event.inputs.tag }}"
+          git push origin HEAD:${{ github.ref_name }}
+
+      - name: Create and push tag
+        run: |
           git tag ${{ github.event.inputs.tag }}
           git push origin ${{ github.event.inputs.tag }}
 
