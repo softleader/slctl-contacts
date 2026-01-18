@@ -1,6 +1,6 @@
 # 執行計劃 - release-automation_20260118
 
-## 階段 1：基礎配置與環境準備
+## 階段 1：基礎配置與環境準備 [checkpoint: ea68b14]
 
 - [x] Task: 建立 GoReleaser 配置文件 (.goreleaser.yaml) <!-- bf5af4c -->
     - [ ] 建立基本的 `.goreleaser.yaml` 並設定 `builds` 區段。
