@@ -4,12 +4,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/spf13/cobra"
-	"gopkg.in/resty.v1"
 	"io"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/spf13/cobra"
+	"gopkg.in/resty.v1"
 )
 
 const (
@@ -30,7 +31,7 @@ const (
 )
 
 var (
-	api = "https://support.softleader.com.tw/leave"
+	api = "https://support.softleader.com.tw/erp"
 )
 
 type contactsCmd struct {
