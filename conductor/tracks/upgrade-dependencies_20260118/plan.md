@@ -7,9 +7,9 @@
 
 ## Phase 2: 依賴包升級與適配 (Upgrade & Adaptation)
 - [x] Task: 升級 `github.com/spf13/cobra` 與 `github.com/gosuri/uitable` 並驗證編譯 (11cdc14)
-- [~] Task: 將 `gopkg.in/resty.v1` 升級至 `v2` 並修改相關程式碼以符合新 API (如有變更)
-- [ ] Task: 執行 `go mod tidy` 升級所有間接依賴並清理 `go.mod`
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: 依賴包升級與適配' (Protocol in workflow.md)
+- [x] Task: 將 `gopkg.in/resty.v1` 升級至 `v2` 並修改相關程式碼以符合新 API (如有變更) (2e33965)
+- [x] Task: 執行 `go mod tidy` 升級所有間接依賴並清理 `go.mod` (9c1020d)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: 依賴包升級與適配' (Protocol in workflow.md)
 
 ## Phase 3: 最終驗證與清理 (Final Verification)
 - [ ] Task: 執行完整測試套件 (`go test ./...`) 並確保測試涵蓋率符合要求 (>80%)
