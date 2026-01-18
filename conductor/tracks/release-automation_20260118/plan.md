@@ -2,7 +2,7 @@
 
 ## 階段 1：基礎配置與環境準備
 
-- [ ] Task: 建立 GoReleaser 配置文件 (.goreleaser.yaml)
+- [x] Task: 建立 GoReleaser 配置文件 (.goreleaser.yaml) <!-- bf5af4c -->
     - [ ] 建立基本的 `.goreleaser.yaml` 並設定 `builds` 區段。
     - [ ] 定義 `archive` 格式為 `tar.gz` 並包含 `metadata.yaml`。
 - [ ] Task: 配置多平台編譯支持 (包含 arm64)
