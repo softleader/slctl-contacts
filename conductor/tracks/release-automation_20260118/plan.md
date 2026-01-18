@@ -28,4 +28,4 @@
     - [ ] 更新 Release 流程說明。
 - [x] Task: 清理舊的發佈邏輯（如果不再需要 Makefile 裡的 dist） <!-- fa135b3 -->
     - [ ] 評估是否移除 `Makefile` 中的 `dist` target，或將其改為呼叫 GoReleaser。
-- [ ] Task: Conductor - User Manual Verification '階段 3：正式集成與清理' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification '階段 3：正式集成與清理' (Protocol in workflow.md)
