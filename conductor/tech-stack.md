@@ -2,8 +2,9 @@
 
 ## 1. 核心開發工具
 - **程式語言**：Go
-- **依賴管理**：Glide
-- **建置工具**：Makefile
+- **依賴管理**：Go Modules
+- **建置工具**：GoReleaser (via Makefile wrapper)
+- **CI/CD**：GitHub Actions
 
 ## 2. 關鍵程式庫
 - **CLI 框架**：`github.com/spf13/cobra` - 用於構建結構清晰的命令列應用程式。
@@ -12,4 +13,4 @@
 
 ## 3. 環境與部署
 - **執行環境**：作為 `slctl` 的插件執行。
-- **交叉編譯**：透過 Makefile 支援 Linux, Windows, 以及 macOS (Darwin) 平台的打包。
+- **交叉編譯**：透過 GoReleaser 支援 Linux, Windows, 以及 macOS (Darwin amd64/arm64) 平台的打包。
