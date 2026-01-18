@@ -1,9 +1,9 @@
 # Implementation Plan: upgrade-dependencies
 
 ## Phase 1: 基礎環境檢查與備份 (Preparation)
-- [ ] Task: 紀錄當前依賴版本（`go.mod`）與測試結果作為基準 (Baseline)
-- [ ] Task: 確保所有現有測試在升級前皆能通過
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: 基礎環境檢查與備份' (Protocol in workflow.md)
+- [x] Task: 紀錄當前依賴版本（`go.mod`）與測試結果作為基準 (Baseline)
+- [x] Task: 確保所有現有測試在升級前皆能通過
+- [x] Task: Conductor - User Manual Verification 'Phase 1: 基礎環境檢查與備份' (Protocol in workflow.md)
 
 ## Phase 2: 依賴包升級與適配 (Upgrade & Adaptation)
 - [ ] Task: 升級 `github.com/spf13/cobra` 與 `github.com/gosuri/uitable` 並驗證編譯
