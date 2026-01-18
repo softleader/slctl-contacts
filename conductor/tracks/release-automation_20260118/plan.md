@@ -22,7 +22,7 @@
     - [ ] 手動解壓產出的 `.tgz` 檔案，確保包含執行檔與正確的 `metadata.yaml`。
 - [x] Task: Conductor - User Manual Verification '階段 2：本地驗證與測試' (Protocol in workflow.md)
 
-## 階段 3：正式集成與清理
+## 階段 3：正式集成與清理 [checkpoint: fd13a91]
 
 - [x] Task: 更新 README 或文件（可選） <!-- 28fdd80 -->
     - [ ] 更新 Release 流程說明。
