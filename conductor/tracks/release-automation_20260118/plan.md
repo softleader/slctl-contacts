@@ -5,7 +5,7 @@
 - [x] Task: 建立 GoReleaser 配置文件 (.goreleaser.yaml) <!-- bf5af4c -->
     - [ ] 建立基本的 `.goreleaser.yaml` 並設定 `builds` 區段。
     - [ ] 定義 `archive` 格式為 `tar.gz` 並包含 `metadata.yaml`。
-- [ ] Task: 配置多平台編譯支持 (包含 arm64)
+- [x] Task: 配置多平台編譯支持 (包含 arm64) <!-- fe05777 -->
     - [ ] 在 `builds` 中加入 `darwin/arm64`。
     - [ ] 確認 LDFLAGS 版本號讀取邏輯。
 - [ ] Task: 建立 GitHub Actions 工作流檔案
