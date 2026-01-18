@@ -15,10 +15,10 @@
 
 ## 階段 2：本地驗證與測試
 
-- [ ] Task: 執行本地 GoReleaser 驗證
+- [x] Task: 執行本地 GoReleaser 驗證 <!-- e0af59e -->
     - [ ] 使用 `--snapshot` 模式模擬發佈流程。
     - [ ] 檢查產出的 `_dist` 資料夾內容是否正確。
-- [ ] Task: 驗證建置出的執行檔與 metadata
+- [x] Task: 驗證建置出的執行檔與 metadata <!-- e0af59e -->
     - [ ] 手動解壓產出的 `.tgz` 檔案，確保包含執行檔與正確的 `metadata.yaml`。
 - [ ] Task: Conductor - User Manual Verification '階段 2：本地驗證與測試' (Protocol in workflow.md)
 
