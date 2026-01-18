@@ -13,7 +13,7 @@
     - [ ] 設定觸發條件為推送 Tag。
 - [x] Task: Conductor - User Manual Verification '階段 1：基礎配置與環境準備' (Protocol in workflow.md)
 
-## 階段 2：本地驗證與測試
+## 階段 2：本地驗證與測試 [checkpoint: 3c83bb5]
 
 - [x] Task: 執行本地 GoReleaser 驗證 <!-- e0af59e -->
     - [ ] 使用 `--snapshot` 模式模擬發佈流程。
