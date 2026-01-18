@@ -20,7 +20,7 @@
     - [ ] 檢查產出的 `_dist` 資料夾內容是否正確。
 - [x] Task: 驗證建置出的執行檔與 metadata <!-- e0af59e -->
     - [ ] 手動解壓產出的 `.tgz` 檔案，確保包含執行檔與正確的 `metadata.yaml`。
-- [ ] Task: Conductor - User Manual Verification '階段 2：本地驗證與測試' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification '階段 2：本地驗證與測試' (Protocol in workflow.md)
 
 ## 階段 3：正式集成與清理
 
