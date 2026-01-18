@@ -1,0 +1,8 @@
+{
+    "track_id": "release-automation_20260118",
+    "type": "feature",
+    "status": "new",
+    "created_at": "2026-01-18T16:47:00Z",
+    "updated_at": "2026-01-18T16:47:00Z",
+    "description": "為 contacts 插件新增 GitHub Actions 與 GoReleaser 自動化發佈功能，並支援 Apple Silicon (arm64)"
+}
